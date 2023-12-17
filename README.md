@@ -2,7 +2,8 @@
 
 
 ## setup 
-
+git clone https://github.com/chandru-shane/VendorManagementSystem.git
+cd VendorManagementSystem
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
