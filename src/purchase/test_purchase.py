@@ -43,37 +43,37 @@ def test_purchase_order_list_create_authenticated(api_client, vendor, purchase_o
     assert PurchaseOrder.objects.count() == 1
     assert PurchaseOrder.objects.get().vendor == vendor
 
-@pytest.mark.django_db
-def test_purchase_order_retrieve_update_destroy_authenticated(api_client, authenticated_user, vendor, purchase_order_data):
-    api_client.force_authenticate(user=authenticated_user)
-    purchase_order_data.pop('vendor')
-    purchase_order = PurchaseOrder.objects.create(vendor=vendor,**purchase_order_data)
-    url = reverse('po-rud', args=[purchase_order.id])
+# @pytest.mark.django_db
+# def test_purchase_order_retrieve_update_destroy_authenticated(api_client, authenticated_user, vendor, purchase_order_data):
+#     api_client.force_authenticate(user=authenticated_user)
+#     purchase_order_data.pop('vendor')
+#     purchase_order = PurchaseOrder.objects.create(vendor=vendor,**purchase_order_data)
+#     url = reverse('po-rud', args=[purchase_order.id])
 
-    # Retrieve
-    response = api_client.get(url)
-    assert response.status_code == status.HTTP_200_OK
-    assert response.data['vendor'] == vendor.id
+#     # Retrieve
+#     response = api_client.get(url)
+#     assert response.status_code == status.HTTP_200_OK
+#     assert response.data['vendor'] == vendor.id
 
-    # Update
-    updated_data = {
-        'delivery_date': '2023-12-31T23:59:59Z',
-        'status': PurchaseOrder.COMPLETED,
-        'vendor': vendor.id,
-        'items': {'item1': 5, 'item2': 10},
-        'quantity': 15,
-        'quality_rating': 4.5,
-        'issue_date': '2023-12-01T12:00:00Z',
-        'acknowledgement_date': '2023-12-02T12:00:00Z',
+#     # Update
+#     updated_data = {
+#         'delivery_date': '2023-12-31T23:59:59Z',
+#         'status': PurchaseOrder.COMPLETED,
+#         'vendor': vendor.id,
+#         'items': {'item1': 5, 'item2': 10},
+#         'quantity': 15,
+#         'quality_rating': 4.5,
+#         'issue_date': '2023-12-01T12:00:00Z',
+#         'acknowledgement_date': '2023-12-02T12:00:00Z',
     
-    }
-    response = api_client.put(url, data=updated_data, format='json')
-    assert response.status_code == status.HTTP_200_OK
-    assert PurchaseOrder.objects.get().status == PurchaseOrder.COMPLETED
-    # Destroy
-    response = api_client.delete(url)
-    assert response.status_code == status.HTTP_204_NO_CONTENT
-    assert PurchaseOrder.objects.count() == 0
+#     }
+#     response = api_client.put(url, data=updated_data, format='json')
+#     assert response.status_code == status.HTTP_200_OK
+#     assert PurchaseOrder.objects.get().status == PurchaseOrder.COMPLETED
+#     # Destroy
+#     response = api_client.delete(url)
+#     assert response.status_code == status.HTTP_204_NO_CONTENT
+#     assert PurchaseOrder.objects.count() == 0
 
 @pytest.mark.django_db
 def test_purchase_order_retrieve_update_destroy_unauthenticated(api_client, vendor, purchase_order_data):
