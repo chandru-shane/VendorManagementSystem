@@ -10,6 +10,8 @@ pip install -r requirements.txt<br/>
 
 
 ## testing<br/>
+cd src
+export DJANGO_SETTINGS_MODULE=backend.settings
 pytest .<br/>
 
 ## run http server<br/>
